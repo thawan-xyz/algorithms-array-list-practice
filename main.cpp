@@ -19,7 +19,7 @@ public:
     }
 
     E getValue() {
-        if (cursorPosition < 0 || cursorPosition > numberElements - 1) {
+        if (cursorPosition > numberElements - 1) {
             cerr << "Error: there is no element at the current cursor";
             exit(1);
         }
@@ -42,7 +42,7 @@ public:
 
     E remove() {
         if (cursorPosition >= numberElements) {
-            cerr << "Error: cursor position is out of bounds!";
+            cerr << "Error: the list is already empty!";
             exit(1);
         }
 
@@ -52,6 +52,11 @@ public:
         }
 
         numberElements--;
+
+        if (cursorPosition == numberElements && cursorPosition != 0) {
+            cursorPosition--;
+        }
+
         return value;
     }
 
