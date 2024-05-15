@@ -102,15 +102,5 @@ private:
 
 int main()
 {
-    int n = 5;
-    auto* pointerList = new ArrayList<int>(n);
-    for (int i = n; i > 0; --i) {
-        pointerList->insert(i);
-    }
-
-    pointerList->print();
-
-    delete pointerList;
-
     return 0;
 }
