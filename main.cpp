@@ -3,7 +3,6 @@
 using namespace std;
 
 template <typename E>
-
 class ArrayList {
 public:
     explicit ArrayList(int size) {
