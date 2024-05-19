@@ -1,110 +1,103 @@
 #include <iostream>
-
 using namespace std;
 
 template <typename E>
 class ArrayList {
 public:
-    explicit ArrayList(int size) {
-        capacity = size;
-        numberElements = 0;
-        cursorPosition = 0;
-        arrayValues = new E[size];
-    }
-
-    void print() {
-        for (int i = 0; i < numberElements; ++i) {
-            cout << "[" << i << "] = " << arrayValues[i] << endl;
-        }
-    }
-
-    E getValue() {
-        if (cursorPosition > numberElements - 1) {
-            cerr << "Error: there is no element at the current cursor";
-            exit(1);
-        }
-        return arrayValues[cursorPosition];
+    ArrayList(int listCapacity) {
+        array = new E[listCapacity];
+        capacity = listCapacity;
+        length = cursor = 0;
     }
 
     void insert(E value) {
-        if (numberElements >= capacity) {
+        if (length >= capacity) {
             cerr << "Error: the list is full!";
             exit(1);
         }
 
-        for (int i = numberElements; i > cursorPosition; --i) {
-            arrayValues[i] = arrayValues[i - 1];
+        for (int i = length; i > cursor; --i) {
+            array[i] = array[i - 1];
         }
 
-        arrayValues[cursorPosition] = value;
-        numberElements++;
+        array[cursor] = value;
+
+        length++;
     }
 
     E remove() {
-        if (cursorPosition >= numberElements) {
-            cerr << "Error: the list is already empty!";
+        if (cursor < 0 || cursor >= length) {
+            cerr << "Error: current cursor position is out of bounds!";
             exit(1);
         }
 
-        E value = arrayValues[cursorPosition];
-        for (int i = cursorPosition; i < numberElements - 1; ++i) {
-            arrayValues[i] = arrayValues[i + 1];
+        E tempValue = array[cursor];
+
+        for (int i = cursor; i < length - 1; ++i) {
+            array[i] = array[i + 1];
         }
 
-        numberElements--;
+        length--;
 
-        if (cursorPosition == numberElements && cursorPosition != 0) {
-            cursorPosition--;
-        }
-
-        return value;
+        return tempValue;
     }
 
-    int getCursorPosition() {
-        return cursorPosition;
+    void clear() {
+        length = cursor = 0;
     }
 
-    void cursorToPosition (int position) {
-        if (position < 0 || position > numberElements - 1) {
-            cerr << "Error: position is out of range!";
+    void cursorToPosition(int cursorPos) {
+        if (cursorPos < 0 || cursorPos > length) {
+            cerr << "Error: this cursor position is out of range!";
             exit(1);
         }
 
-        cursorPosition = position;
+        cursor = cursorPos;
     }
 
     void cursorToStart() {
-        cursorPosition = 0;
+        cursor = 0;
     }
 
     void cursorToEnd() {
-        cursorPosition = numberElements - 1;
+        cursor = length;
     }
 
-    void cursorPrevious() {
-        if (cursorPosition > 0) {
-            cursorPosition--;
+    void cursorPrev() {
+        if (cursor != 0) {
+            cursor--;
         }
     }
 
     void cursorNext() {
-        if (cursorPosition < numberElements - 1) {
-            cursorPosition++;
+        if (cursor < length) {
+            cursor++;
         }
     }
 
-    int getNumberElements() {
-        return numberElements;
+    E getValue() {
+        if (cursor >= length) {
+            cerr << "Error: there is no element at the current cursor position!";
+        }
+
+        return array[cursor];
+    }
+
+    int getCursor() {
+        return cursor;
+    }
+
+    int getLength() {
+        return length;
     }
 
 private:
+    E* array;
     int capacity;
-    int numberElements;
-    int cursorPosition;
-    E* arrayValues;
+    int length;
+    int cursor;
 };
 
-int main()
-{
+int main() {
     return 0;
 }
